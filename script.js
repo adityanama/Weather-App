@@ -10,6 +10,7 @@ const userInfoContainer = document.querySelector(".user-info-container");
 let currTab = userTab;
 const apiKey = "9b43ca328cee7b1857defa079118bc7d";
 currTab.classList.add("current-tab");
+getfromSessionStorage();
 
 function switchTab(clickedTab) {
     if (clickedTab != currTab) {
@@ -99,6 +100,7 @@ function getLocation()
 
     else
     {
+        alert("No Geolocation support available");
     }
 }
 
@@ -115,5 +117,35 @@ function showPosition(position)
 
 const grantAccessButton = document.querySelector("[data-grantAccess]");
 grantAccessButton.addEventListener("click", getLocation);
+const searchInput = document.querySelector("[data-searchInput]");
 
 
+
+searchForm.addEventListener("submit", (e)=>{
+    e.preventDefault();
+    let cityName = searchInput.value;
+
+    if(cityName === "")
+        return;
+    else   
+        fetchSearchWeatherInfo(cityName);
+})
+
+async function fetchSearchWeatherInfo(city)
+{
+    loadingScreen.classList.add("active");
+    userInfoContainer.classList.remove("active");
+    grantAccessButton.classList.remove("active");
+
+    try {
+        const response = await fetch(
+            `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`
+          );
+        const data = await response.json();
+        loadingScreen.classList.remove("active");
+        userInfoContainer.classList.add("active");
+        renderWeatherInfo(data);
+    }
+    catch(err) {
+    }
+}
