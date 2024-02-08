@@ -14,6 +14,7 @@
 
 .wrapper{
     overflow: hidden;
+    position: relative;
     width: 100vw;
     height: 100vh;
     color: var(--colorLight2);
@@ -216,9 +217,25 @@ h1{
     border-radius: 100%;
 }
 
+.error-image{
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 37%;
+    left: 37%;
+    align-items: center;
+}
+
+.error-image.active{
+    display: flex;
+}
+
+.error-image p{
+    font-size: 1.5rem;
+    word-spacing: 0.25rem;
+}
+
 .tab.current-tab{
     background-color: rgba(219,226,239,0.5);
     border-radius: 4px;
 }
-
-

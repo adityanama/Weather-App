@@ -1,12 +1,12 @@
 const userTab = document.querySelector("[data-userWeather]");
 const searchTab = document.querySelector("[data-searchWeather]");
 const userContainer = document.querySelector(".weather-conatiner");
-
 const grantAccessContainer = document.querySelector(".grant-location-container");
 const searchForm = document.querySelector("[data-searchForm]");
 const loadingScreen = document.querySelector(".loading-container");
 const userInfoContainer = document.querySelector(".user-info-container");
 const searchInput = document.querySelector("[data-searchInput]");
+const errorImage = document.querySelector(".error-image");
 
 let currTab = userTab;
 const apiKey = "9b43ca328cee7b1857defa079118bc7d";
@@ -29,6 +29,7 @@ function switchTab(clickedTab) {
         else {
             searchForm.classList.remove("active");
             userInfoContainer.classList.remove("active");
+            errorImage.classList.remove("active");
             getfromSessionStorage();
         }
     }
@@ -68,15 +69,14 @@ async function fetchUserWeatherInfo(coordinates) {
         userInfoContainer.classList.add("active");
         renderWeatherInfo(data);
     }
-    
-    catch(err){
+
+    catch (err) {
         loadingScreen.classList.remove("active");
-        
+
     }
 }
 
-function renderWeatherInfo(weatherInfo)
-{
+function renderWeatherInfo(weatherInfo) {
     const cityName = document.querySelector("[data-cityName]");
     const countryIcon = document.querySelector("[data-countryIcon]");
     const desc = document.querySelector("[data-weatherDesc]");
@@ -96,44 +96,40 @@ function renderWeatherInfo(weatherInfo)
     clouds.innerText = `${weatherInfo?.clouds?.all} %`;
 }
 
-function getLocation()
-{
-    if(navigator.geolocation)
+function getLocation() {
+    if (navigator.geolocation)
         navigator.geolocation.getCurrentPosition(showPosition);
 
-    else
-    {
+    else {
         alert("No Geolocation support available");
     }
 }
 
-function showPosition(position)
-{
+function showPosition(position) {
     const userCoordinates = {
         lat: position.coords.latitude,
         lon: position.coords.longitude,
     }
 
-    sessionStorage.setItem("user-coordinates",JSON.stringify(userCoordinates));
-    fetchUserWeatherInfo(userCoordinates); 
+    sessionStorage.setItem("user-coordinates", JSON.stringify(userCoordinates));
+    fetchUserWeatherInfo(userCoordinates);
 }
 
 const grantAccessButton = document.querySelector("[data-grantAccess]");
 grantAccessButton.addEventListener("click", getLocation);
 
 
-searchForm.addEventListener("submit", (e)=>{
+searchForm.addEventListener("submit", (e) => {
     e.preventDefault();
     let cityName = searchInput.value;
 
-    if(cityName === "")
+    if (cityName === "")
         return;
-    else   
+    else
         fetchSearchWeatherInfo(cityName);
 })
 
-async function fetchSearchWeatherInfo(city)
-{
+async function fetchSearchWeatherInfo(city) {
     loadingScreen.classList.add("active");
     userInfoContainer.classList.remove("active");
     grantAccessButton.classList.remove("active");
@@ -147,7 +143,8 @@ async function fetchSearchWeatherInfo(city)
         userInfoContainer.classList.add("active");
         renderWeatherInfo(data);
     }
-    catch(err) {
-        
+    catch (err) {
+        userInfoContainer.classList.remove("active");
+        errorImage.classList.add("active");
     }
 }
