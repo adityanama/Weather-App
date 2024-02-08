@@ -6,6 +6,7 @@ const grantAccessContainer = document.querySelector(".grant-location-container")
 const searchForm = document.querySelector("[data-searchForm]");
 const loadingScreen = document.querySelector(".loading-container");
 const userInfoContainer = document.querySelector(".user-info-container");
+const searchInput = document.querySelector("[data-searchInput]");
 
 let currTab = userTab;
 const apiKey = "9b43ca328cee7b1857defa079118bc7d";
@@ -22,9 +23,11 @@ function switchTab(clickedTab) {
             userInfoContainer.classList.remove("active");
             grantAccessContainer.classList.remove("active");
             searchForm.classList.add("active");
+            searchInput.value = "";
+
         }
         else {
-            searchForm.classList.add("active");
+            searchForm.classList.remove("active");
             userInfoContainer.classList.remove("active");
             getfromSessionStorage();
         }
@@ -87,10 +90,10 @@ function renderWeatherInfo(weatherInfo)
     countryIcon.src = `https://flagcdn.com/144x108/${weatherInfo?.sys?.country.toLowerCase()}.png`;
     desc.innerText = weatherInfo?.weather[0]?.description;
     weatherIcon.src = `http://openweathermap.org/img/w/${weatherInfo?.weather?.[0]?.icon}.png`;
-    temp.innerText = weatherInfo?.main?.temp;
-    windSpeed.innerText = weatherInfo?.wind?.speed;
-    humidity.innerText = weatherInfo?.main?.humidity;
-    clouds.innerText = weatherInfo?.clouds?.all;
+    temp.innerText = `${weatherInfo?.main?.temp} °C`;
+    windSpeed.innerText = `${weatherInfo?.wind?.speed} m/s`;
+    humidity.innerText = `${weatherInfo?.main?.humidity} %`;
+    clouds.innerText = `${weatherInfo?.clouds?.all} %`;
 }
 
 function getLocation()
@@ -117,8 +120,6 @@ function showPosition(position)
 
 const grantAccessButton = document.querySelector("[data-grantAccess]");
 grantAccessButton.addEventListener("click", getLocation);
-const searchInput = document.querySelector("[data-searchInput]");
-
 
 
 searchForm.addEventListener("submit", (e)=>{
@@ -140,12 +141,13 @@ async function fetchSearchWeatherInfo(city)
     try {
         const response = await fetch(
             `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`
-          );
+        );
         const data = await response.json();
         loadingScreen.classList.remove("active");
         userInfoContainer.classList.add("active");
         renderWeatherInfo(data);
     }
     catch(err) {
+        
     }
 }

@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather App</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather+Sans:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -17,7 +21,7 @@
         <div class="weather-container">
 
             <!-- grant location screen -->
-            <div class="grant-location-container">
+            <div class="sub-container grant-location-container">
                 <img src="./assets/location.png" width="80" height="80" loading="lazy">
                 <p>Grant Location Access</p>
                 <p>Allow access to get Weather Information</p>
@@ -33,12 +37,13 @@
             </form>
 
             <!-- loading screen -->
-            <div class="loading-container">
+            <div class="sub-container loading-container">
                 <img src="./assets/loading.gif" width="150" height="150">
+                <p>Loading</p>
             </div>
 
             <!-- show weather info -->
-            <div class="user-info-container">
+            <div class="sub-container user-info-container">
 
                 <div class="name">
                     <p data-cityName></p>
@@ -50,7 +55,7 @@
                 <p data-temp></p>
                 
                 <!-- 3 cards -->
-                <div class="parameter-conatiner">
+                <div class="parameter-container">
 
                     <div class="parameter">
                         <img src="./assets/wind.png">
